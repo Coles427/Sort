@@ -6,27 +6,27 @@
 
 #include "mergesort.h"
 
-void MergeSort(std::vector<int>* numbers) {
-   MergeSortRecurse(numbers, 0, numbers->size() - 1);
+void MergeSort(std::vector<int>* numbers, int& memAccess, int& comp) {
+   MergeSortRecurse(numbers, 0, numbers->size() - 1, memAccess, comp);
 }
 
 
-void MergeSortRecurse(std::vector<int>* numbers, int i, int k) {
+void MergeSortRecurse(std::vector<int>* numbers, int i, int k, int& memAccess, int& comp) {
    int j = 0;
    
    if (i < k) {
       j = (i + k) / 2;  // Find the midpoint in the partition
       
       // Recursively sort left and right partitions
-      MergeSortRecurse(numbers, i, j);
-      MergeSortRecurse(numbers, j + 1, k);
+      MergeSortRecurse(numbers, i, j, memAccess, comp);
+      MergeSortRecurse(numbers, j + 1, k, memAccess, comp);
       
       // Merge left and right partition in sorted order
-      Merge(numbers, i, j, k);
+      Merge(numbers, i, j, k, memAccess, comp);
    }
 }
 
-void Merge(std::vector<int>* numbers, int i, int j, int k) {
+void Merge(std::vector<int>* numbers, int i, int j, int k, int& memAccess, int& comp) {
    int mergedSize = k - i + 1;                // Size of merged partition
    int mergePos = 0;                          // Position to insert merged number
    int leftPos = 0;                           // Position of elements in left partition
@@ -39,13 +39,20 @@ void Merge(std::vector<int>* numbers, int i, int j, int k) {
    rightPos = j + 1;                          // Initialize right partition position
    
    // Add smallest element from left or right partition to merged numbers
-   while (leftPos <= j && rightPos <= k) {
+   ++comp;
+    while (leftPos <= j && rightPos <= k) {
+       ++comp;
       if ((*numbers)[leftPos] < (*numbers)[rightPos]) {
+          memAccess += 2;
+          comp++;
          mergedNumbers[mergePos] = (*numbers)[leftPos];
+          ++memAccess;
          ++leftPos;
       }
       else {
          mergedNumbers[mergePos] = (*numbers)[rightPos];
+          comp++;
+          ++memAccess;
          ++rightPos;
          
       }
@@ -55,6 +62,7 @@ void Merge(std::vector<int>* numbers, int i, int j, int k) {
    // If left partition is not empty, add remaining elements to merged numbers
    while (leftPos <= j) {
       mergedNumbers[mergePos] = (*numbers)[leftPos];
+      ++memAccess;
       ++leftPos;
       ++mergePos;
    }
@@ -62,6 +70,7 @@ void Merge(std::vector<int>* numbers, int i, int j, int k) {
    // If right partition is not empty, add remaining elements to merged numbers
    while (rightPos <= k) {
       mergedNumbers[mergePos] = (*numbers)[rightPos];
+      memAccess++;
       ++rightPos;
       ++mergePos;
    }
@@ -69,5 +78,6 @@ void Merge(std::vector<int>* numbers, int i, int j, int k) {
    // Copy merge number back to numbers
    for (mergePos = 0; mergePos < mergedSize; ++mergePos) {
       (*numbers)[i + mergePos] = mergedNumbers[mergePos];
+      memAccess++;
    }
 }

@@ -6,6 +6,6 @@
 
 #include <vector>
 
-void MergeSort(std::vector<int>* numbers);
-void MergeSortRecurse(std::vector<int>* numbers, int i, int k);
-void Merge(std::vector<int>* numbers, int i, int j, int k);
+void MergeSort(std::vector<int>* numbers, int& memAccess, int&comp);
+void MergeSortRecurse(std::vector<int>* numbers, int i, int k, int& memAccess, int& comp);
+void Merge(std::vector<int>* numbers, int i, int j, int k, int& memAccess, int& comp);
