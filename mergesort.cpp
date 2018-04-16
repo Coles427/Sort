@@ -19,7 +19,7 @@ void MergeSortRecurse(std::vector<int>* numbers, int i, int k, int& memAccess, i
       
       // Recursively sort left and right partitions
       MergeSortRecurse(numbers, i, j, memAccess, comp);
-      MergeSortRecurse(numbers, j + 1, k, memAccess, comp);
+       MergeSortRecurse(numbers, j + 1, k, memAccess, comp);
       
       // Merge left and right partition in sorted order
       Merge(numbers, i, j, k, memAccess, comp);
@@ -39,38 +39,41 @@ void Merge(std::vector<int>* numbers, int i, int j, int k, int& memAccess, int& 
    rightPos = j + 1;                          // Initialize right partition position
    
    // Add smallest element from left or right partition to merged numbers
-   ++comp;
+
     while (leftPos <= j && rightPos <= k) {
-       ++comp;
       if ((*numbers)[leftPos] < (*numbers)[rightPos]) {
           memAccess += 2;
-          comp++;
          mergedNumbers[mergePos] = (*numbers)[leftPos];
-          ++memAccess;
+          memAccess += 2;
          ++leftPos;
       }
       else {
-         mergedNumbers[mergePos] = (*numbers)[rightPos];
-          comp++;
-          ++memAccess;
+         memAccess+=2;
+          mergedNumbers[mergePos] = (*numbers)[rightPos];
+          memAccess+=2;
          ++rightPos;
-         
+
+
       }
+
       ++mergePos;
+      comp++;
    }
+
    
    // If left partition is not empty, add remaining elements to merged numbers
    while (leftPos <= j) {
       mergedNumbers[mergePos] = (*numbers)[leftPos];
-      ++memAccess;
+      memAccess+=2;
       ++leftPos;
       ++mergePos;
+
    }
    
    // If right partition is not empty, add remaining elements to merged numbers
    while (rightPos <= k) {
       mergedNumbers[mergePos] = (*numbers)[rightPos];
-      memAccess++;
+      memAccess+=2;
       ++rightPos;
       ++mergePos;
    }
@@ -78,6 +81,6 @@ void Merge(std::vector<int>* numbers, int i, int j, int k, int& memAccess, int& 
    // Copy merge number back to numbers
    for (mergePos = 0; mergePos < mergedSize; ++mergePos) {
       (*numbers)[i + mergePos] = mergedNumbers[mergePos];
-      memAccess++;
+      memAccess+=2;
    }
 }

@@ -29,23 +29,27 @@ int main(int argc, char** argv) {
     }
     file.close();
 
+    std::vector <int> sort;
+
     for (unsigned int i = 0; i < samples.size() ; ++i) {
         int memAccess = 0;
         int comp = 0;
+        sort = samples[i];
         //Values for Insertion sort
         std::cout<<sampleNames[i]<<",";
         t = clock();
-        InsertionSort(&samples[i], memAccess, comp);
+        InsertionSort(&sort, memAccess, comp);
         t = clock() - t;
-        std::cout<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<< comp<<"," <<memAccess<<",";
+        std::cout<<std::fixed<<std::setprecision(4)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<<std::setw(2)<< comp<<"," <<std::setw(3)<< memAccess<<",";
 
         //Values for Merge Sort
         memAccess = 0;
         comp = 0;
+        sort = samples[i];
         t = clock();
-        MergeSort(&samples[i], memAccess, comp);
+        MergeSort(&sort, memAccess, comp);
         t = clock() - t;
-        std::cout<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<< comp<<"," <<memAccess<<std::endl;
+        std::cout<<std::fixed<<std::setprecision(4)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<<std::setw(2)<< comp<<"," <<std::setw(3)<< memAccess<<std::endl;
     }
 
 
