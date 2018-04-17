@@ -20,16 +20,18 @@ int main(int argc, char** argv) {
     for(auto itr = jsonObj.begin(); itr != jsonObj.end(); ++itr){
         nlohmann::json sample = jsonObj[itr.key()];
         int temp = sample.begin().value();
+        int i = -1;
         for(auto itrs = sample.begin(); itrs!= sample.end(); ++itrs){
             if(itr.key() != "metadata"){
                 if(itrs.value() < temp){
 
                     //inversions[itr.key()] = "ConsecutiveInversions";
-                    inversions[itr.key()]["ConsecutiveInversions"][std::to_string(numInversions + 1)] = {temp, itrs.value()};
+                    inversions[itr.key()]["ConsecutiveInversions"][std::to_string(i)] = {temp, itrs.value()};
                     numInversions ++;
                 }
                 temp = itrs.value();
             }
+            i++;
         }
         if(numInversions > 0){
             inversions[itr.key()]["sample"] = sample;

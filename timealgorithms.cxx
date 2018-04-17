@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include "insertionsort.h"
 #include "mergesort.h"
+#include "quicksort.h"
 
 
 int main(int argc, char** argv) {
@@ -31,6 +32,9 @@ int main(int argc, char** argv) {
 
     std::vector <int> sort;
 
+    std::cout << "Sample,InsertionSortTime,InsertionSortCompares,"<<
+            "InsertionSortMemaccess,MergeSortTime,MergeSortCompares,MergeSortMemaccess,QuickSortTime,QuickSortCompares,QuickSortMemaccess"<<std::endl; //Prints header
+
     for (unsigned int i = 0; i < samples.size() ; ++i) {
         int memAccess = 0;
         int comp = 0;
@@ -40,7 +44,7 @@ int main(int argc, char** argv) {
         t = clock();
         InsertionSort(&sort, memAccess, comp);
         t = clock() - t;
-        std::cout<<std::fixed<<std::setprecision(4)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<<std::setw(2)<< comp<<"," <<std::setw(3)<< memAccess<<",";
+        std::cout<<std::fixed<<std::setprecision(6)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<< comp<<"," << memAccess<<",";
 
         //Values for Merge Sort
         memAccess = 0;
@@ -49,7 +53,16 @@ int main(int argc, char** argv) {
         t = clock();
         MergeSort(&sort, memAccess, comp);
         t = clock() - t;
-        std::cout<<std::fixed<<std::setprecision(4)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<<std::setw(2)<< comp<<"," <<std::setw(3)<< memAccess<<std::endl;
+        std::cout<<std::fixed<<std::setprecision(6)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<< comp<<","<< memAccess<<",";
+
+        //Values for Quicksort
+        memAccess = 0;
+        comp = 0;
+        sort = samples[i];
+        t = clock();
+        QuickSort(&sort, memAccess, comp);
+        t = clock() - t;
+        std::cout<<std::fixed<<std::setprecision(6)<<(((float)t)/CLOCKS_PER_SEC) * 100000 <<","<<comp<<"," <<memAccess<<std::endl;
     }
 
 
